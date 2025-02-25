@@ -8,6 +8,7 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { useAuth, useClerk } from "@clerk/nextjs";
 import {
     FlameIcon,
     HistoryIcon,
@@ -35,9 +36,12 @@ const items = [
         title: "All Playlist",
         url: "/playlist",
         icon: ListVideoIcon,
+        auth: true,
     },
 ];
 export default function PersonalSection() {
+    const { isSignedIn } = useAuth();
+    const clerk = useClerk();
     return (
         <SidebarGroup>
             <SidebarGroupLabel>You</SidebarGroupLabel>
@@ -49,7 +53,12 @@ export default function PersonalSection() {
                                 tooltip={item.title}
                                 asChild
                                 isActive={false} //TODO:
-                                onClick={() => {}} //TODO:
+                                onClick={(e) => {
+                                    if (!isSignedIn && item.auth) {
+                                        e.preventDefault();
+                                        return clerk.openSignIn();
+                                    }
+                                }} //TODO:
                             >
                                 <Link
                                     href={item.url}
