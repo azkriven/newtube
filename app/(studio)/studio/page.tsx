@@ -6,7 +6,8 @@ export default function Studio() {
     void trpc.studio.getMany.prefetchInfinite({ limit: DEFAULT_LIMIT });
     return (
         <HydrateClient>
-            <StudioView />
+            {/* <StudioView /> */}
+            <div>studio</div>
         </HydrateClient>
     );
 }
